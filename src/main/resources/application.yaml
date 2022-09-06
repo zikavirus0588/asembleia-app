@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: "assembleia"
+  flyway.check-location: false
+server:
+  port: 8080
+  servlet:
+    context-path: "/assembleia/api"
+swagger:
+  protocolo: http
+  base.url: localhost:8080
+rqueue:
+  key:
+    prefix: "assembleia::"
+  message:
+    converter:
+      provider:
+        class: "br.com.gomesar.assembleia.configuration.mensageria.MessageConverter"
+    durability:
+      in-terminal-state: 30
+  job:
+    durability:
+      in-terminal-state: 300
+assembleia:
+  description: ^project.description^
+  sessao:
+    queueName: finaliza-sessao
+  user-service:
+    scheme: https
+    host: user-info.herokuapp.com
+    path: /users
+im:
+  aop:
+    loggers:
+      entering-message: Executando o método [{method}] com os parâmetros [{parameters}]
+      exited-abnormally-message: Método [{method}] lançou a exceção [{exception}]
+      exited-message: Método [{method}] executou normalmente e retornou [{return-value}]
+      elapsed-message: Execução do método [{method}] durou [{elapsed}]
+      elapsed-warning-message: Execução do método [{method}] atingiu o tempo límite [{elapsed-time-limit}]
+logging:
+  level:
+    root: INFO

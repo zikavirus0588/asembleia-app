@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:assembleia
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  flyway:
+    locations: classpath:/db/{vendor}/local
+  redis:
+    port: 6379
+    password: mypass
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate.ddl-auto: create-drop

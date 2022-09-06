@@ -1,0 +1,13 @@
+version: '3'
+services:
+  redis:
+    image: redis:6.2-alpine
+    command: redis-server --include /usr/local/etc/redis/redis.conf
+    container_name: redis-rqueue
+    hostname: redis-rqueue
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ~/volume/redis:/data
+      - ~/redis-rqueue/redis.conf:/usr/local/etc/redis/redis.conf
