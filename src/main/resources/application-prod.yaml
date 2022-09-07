@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${ASSEMBLEIA_POSTGRES_URL}
+    username: ${ASSEBLEIA_POSTGRES_USER}
+    password: ${ASSEMBLEIA_POSTGRES_PASSWORD}
+  flyway:
+    locations: classpath:/db/{vendor}/prod
+  redis:
+    host: ${ASSEMBLEIA_REDIS_HOST}
+    port: ${ASSEMBLEIA_REDIS_PORT}
+    password: ${ASSEMBLEIA_REDIS_PASSWORD}
+  jpa:
+    hibernate.ddl-auto: none
+swagger:
+  protocolo: https
+  base.url: gomesar-assembleia.herokuapp.com
