@@ -92,7 +92,7 @@ class SessaoService(
         with(sessaoControle) {
             adicionaESalvaVotosNaPauta(pauta = pauta, sessaoControle = this)
             atualizaDadosDaSessaoESalvaNoBanco(this)
-            this.apply { expiracao = 90L }.also { sessaoControleRepository.save(it) }
+            sessaoControleRepository.save(this.apply { expiracao = 90L })
         }
     }
 

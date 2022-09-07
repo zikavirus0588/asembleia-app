@@ -10,4 +10,5 @@ class AssembleiaApplication
 
 fun main(args: Array<String>) {
 	runApplication<AssembleiaApplication>(*args)
+	println("Aplicação está de pé")
 }
