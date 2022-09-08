@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/assembleia-*.jar --spring.profiles.active=prod
+web: java $JAVA_OPTS -Xmx300m -Dserver.port=$PORT -jar target/assembleia-*.jar --spring.profiles.active=prod
