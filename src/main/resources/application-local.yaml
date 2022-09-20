@@ -8,7 +8,7 @@ spring:
     locations: classpath:/db/{vendor}/local
   redis:
     port: 6379
-    password: mypass
+    password: ${ASSEMBLEIA_REDIS_PASSWORD}
   h2:
     console:
       enabled: true

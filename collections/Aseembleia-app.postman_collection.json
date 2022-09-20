@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "defdd788-3681-42b4-901a-b64f2d5cc245",
+		"name": "Aseembleia-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11282251"
+	},
+	"item": [
+		{
+			"name": "simular sessão de votos",
+			"item": [
+				{
+					"name": "criar pauta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Payload deve ser válido\", () => {",
+									"    console.log(pm.response);",
+									"    postman.setNextRequest(null);",
+									"    pm.response.to.have.status(201);",
+									"    postman.setNextRequest('buscar pautas');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body =  {",
+									"    \"nome\": \"{{nome-pauta}}\"",
+									"}",
+									"pm.collectionVariables.set('req_body', JSON.stringify(body));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{req_body}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/assembleia/api/v1/pautas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assembleia",
+								"api",
+								"v1",
+								"pautas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar pautas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Payload deve ser válido\", () => {",
+									"    console.log(pm.response)",
+									"    postman.setNextRequest(null)",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.have.body;",
+									"    const r = pm.response.json();",
+									"    pm.expect(r['payload']).to.be.an(\"array\").and.not.to.be.empty;",
+									"    let pautaId = r['payload'].find(obj => obj.nome === pm.collectionVariables.get('nome-pauta')).pauta_id",
+									"    pm.collectionVariables.set(\"pauta-id\", pautaId);",
+									"    postman.setNextRequest('criar sessão')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/assembleia/api/v1/pautas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assembleia",
+								"api",
+								"v1",
+								"pautas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criar sessão",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Payload deve ser válido\", () => {",
+									"    postman.setNextRequest(null);",
+									"    pm.response.to.have.status(201);",
+									"    postman.setNextRequest('votar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body =  {",
+									"    \"pauta_id\": \"{{pauta-id}}\",",
+									"    \"duracao\": \"{{duracao-sessao}}\"",
+									"}",
+									"pm.collectionVariables.set('req_body', JSON.stringify(body));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pauta_id\": \"{{pauta-id}}\",\n    \"duracao\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/assembleia/api/v1/sessoes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assembleia",
+								"api",
+								"v1",
+								"sessoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "votar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Payload deve ser válido\", () => {",
+									"    console.log(pm.response)",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body =  {",
+									"    \"usuario\": data[\"usuario\"],",
+									"    \"resposta\": data[\"resposta\"],",
+									"    \"pauta_id\": \"{{pauta-id}}\"",
+									"}",
+									"pm.collectionVariables.set('req_body', JSON.stringify(body));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{req_body}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/assembleia/api/v1/votos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assembleia",
+								"api",
+								"v1",
+								"votos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca detalhes da sessão",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/assembleia/api/v1/sessoes/:sessaoId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assembleia",
+								"api",
+								"v1",
+								"sessoes",
+								":sessaoId"
+							],
+							"variable": [
+								{
+									"key": "sessaoId",
+									"value": "{{pauta-id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "nome-pauta",
+			"value": "pauta_1",
+			"type": "string"
+		},
+		{
+			"key": "duracao-sessao",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "req_body",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pauta-id",
+			"value": ""
+		}
+	]
+}
