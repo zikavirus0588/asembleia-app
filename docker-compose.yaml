@@ -2,12 +2,34 @@ version: '3'
 services:
   redis:
     image: redis:6.2-alpine
-    command: redis-server --include /usr/local/etc/redis/redis.conf
-    container_name: redis-rqueue
-    hostname: redis-rqueue
+    command: redis-server --save 20 1 --loglevel warning --requirepass $ASSEMBLEIA_REDIS_PASSWORD
+    container_name: $ASSEMBLEIA_REDIS_CONTAINERNAME
+    hostname: $ASSEMBLEIA_REDIS_HOSTNAME
     restart: always
     ports:
       - "6379:6379"
     volumes:
-      - ~/redis/data:/data
-      - ~/redis/config/redis.conf:/usr/local/etc/redis/redis.conf
+      - mensageria:/data
+    networks:
+      - assembleia-network
+  app:
+    image: argkntb/assembleia-app:latest
+    container_name: assembleia-app
+    environment:
+      ASSEMBLEIA_REDIS_PASSWORD: $ASSEMBLEIA_REDIS_PASSWORD
+      ASSEMBLEIA_REDIS_HOST: $ASSEMBLEIA_REDIS_HOSTNAME
+      SPRING_PROFILES_ACTIVE: $SPRING_PROFILES_ACTIVE
+    ports:
+      - "8080:8080"
+    networks:
+      - assembleia-network
+    links:
+      - redis
+    depends_on:
+      - redis
+volumes:
+  mensageria:
+    driver: local
+networks:
+  assembleia-network:
+    driver: bridge

@@ -9,6 +9,7 @@ spring:
   redis:
     port: 6379
     password: ${ASSEMBLEIA_REDIS_PASSWORD}
+    host: ${ASSEMBLEIA_REDIS_HOST}
   h2:
     console:
       enabled: true

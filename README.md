@@ -4,32 +4,25 @@ Conjunto de API's para simular uma sessão de votos numa assembléia.
 ## <span style="color: orange">Pré-Requisitos</span>
 
 - Docker & Docker-compose instalados
-- Java 11
-- Redis 6.2
 - Postman Version 9.30.4
-- definir uma variável de ambiente para armazenar o password do redis: ${ASSEMBLEIA_REDIS_PASSWORD}
 
-## <span style="color: orange">Preparando container do Redis</span>
+## <span style="color: orange">Subindo a aplicação no container</span>
 
-Caso sua máquina local não possua o Redis 6.2 instalado, é possível criar um container
-utilizando o [docker-compose](./docker-compose.yaml). Será necessário executar os passos a seguir:
+Na raiz do projeto, executar o seguinte comando:
 
-- Criar um diretório para armazenar localmente os dados. **(~/redis/data)**
-- Criar um diretório para armazenar localmente o arquivo de configuração do redis. **(~/redis/config)**
-- Criar um arquivo de configuração do redis (redis.conf) no diretório **~/redis/config**
-- Atribuir o valor da variável ${ASSEMBLEIA_REDIS_PASSWORD} à propriedade de configuraão **requirepass**
+**docker-compose up -d**
 
-## <span style="color: orange">Subindo a aplicação localmente</span>
+Em seguida, verificar se os containers estão de pé:
 
-Na raiz do projeto, executar os seguintes comandos:
+**docker ps**
 
-#### subir o container do redis:
-docker-compose up -d
+Verificar os logs da aplicação:
 
-#### executar a aplicação com o profile local:
-./mvnw clean install spring-boot:run -Dspring-boot.run.profiles=local
+**docker logs assembleia-app**
 
-Se tudo correr bem, será possivel ver a mensagem "aplicação está de pé" nos logs de inicialização.
+Parar a execução do container:
+
+**docker-compose down**
 
 A documentação das API's poderá ser vista localmente através do link [assembleia-app](http://localhost:8080/assembleia/api/swagger-ui/)
 
