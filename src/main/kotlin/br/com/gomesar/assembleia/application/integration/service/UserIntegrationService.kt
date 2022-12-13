@@ -5,6 +5,7 @@ import br.com.gomesar.assembleia.application.commons.removeCaracteresEspeciais
 import br.com.gomesar.assembleia.application.integration.exceptions.UsuarioNaoEncontradoException
 import br.com.gomesar.assembleia.application.integration.exceptions.UsuarioServiceIndisponivelException
 import br.com.gomesar.assembleia.application.integration.request.UserIntegrationRequest
+import br.com.gomesar.assembleia.application.integration.response.EStatusUsuarioVotacao
 import br.com.gomesar.assembleia.application.integration.response.UserIntegrationResponse
 import br.com.gomesar.assembleia.application.services.bundle.IMessageBundleService
 import br.com.gomesar.assembleia.application.services.bundle.MessageBundleService
@@ -27,12 +28,16 @@ class UserIntegrationService(
     @Value("\${assembleia.user-service.scheme}") private val scheme: String,
     @Value("\${assembleia.user-service.host}") private val host: String,
     @Value("\${assembleia.user-service.path}") private val path: String,
+    @Value("\${assembleia.mock-user-service}") private val mock: Boolean,
     private val messageBundleService: IMessageBundleService
 ) : IUserIntegrationService {
 
     @LogBefore(level = Level.INFO, declaringClass = UserIntegrationService::class)
     @LogAfterThrowing(declaringClass = UserIntegrationService::class)
     override fun getUserResponse(request: UserIntegrationRequest): UserIntegrationResponse {
+        if (mock) {
+            return UserIntegrationResponse(EStatusUsuarioVotacao.randomStatus())
+        }
         val uri = UriComponentsBuilder.newInstance().scheme(scheme).host(host)
             .path("$path/${request.cpf.removeCaracteresEspeciais()}")
             .build().toUri()

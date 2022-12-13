@@ -44,13 +44,7 @@ internal class UserIntegrationServiceTest {
     fun setUp() {
         host = "user-info.herokuapp.com"
         path = "/users"
-        userIntegrationService = UserIntegrationService(
-            restTemplate,
-            "http",
-            host,
-            path,
-            messageBundleService
-        )
+        userIntegrationService = montaService()
         userIntegrationRequest = UserIntegrationRequest("111.222.333-44")
         userIntegrationResponse = UserIntegrationResponse(EStatusUsuarioVotacao.ABLE_TO_VOTE)
         every { messageBundleService.getMessage(any(),*anyVararg()) } returns ""
@@ -111,6 +105,14 @@ internal class UserIntegrationServiceTest {
         )
     }
 
+    private fun montaService(mock: Boolean = false) = UserIntegrationService(
+        restTemplate,
+        "http",
+        host,
+        path,
+        mock,
+        messageBundleService
+    )
 
 
 }
