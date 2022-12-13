@@ -8,14 +8,11 @@ import br.com.gomesar.assembleia.application.integration.request.UserIntegration
 import br.com.gomesar.assembleia.application.integration.response.EStatusUsuarioVotacao
 import br.com.gomesar.assembleia.application.integration.response.UserIntegrationResponse
 import br.com.gomesar.assembleia.application.services.bundle.IMessageBundleService
-import br.com.gomesar.assembleia.application.services.bundle.MessageBundleService
-import br.com.gomesar.assembleia.application.services.pauta.PautaService
 import im.aop.loggers.Level
 import im.aop.loggers.advice.after.throwing.LogAfterThrowing
 import im.aop.loggers.advice.before.LogBefore
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpStatusCodeException
